@@ -1,5 +1,6 @@
 package screens;
 
+import haxe.ds.StringMap;
 import openfl.ui.Keyboard;
 import openfl.events.KeyboardEvent;
 import events.EndEvent;
@@ -35,6 +36,8 @@ class BackpackScreen extends Sprite implements FrameInterface {
     private var dragged(null, null):BackpackItemInstance;
     private var dragging(null, null):Bool;
 
+    private var tiles(null, null):StringMap<TileAsset>;
+
     private var score(null, null):Int;
 
     public function new(model:LevelModel) {
@@ -48,15 +51,21 @@ class BackpackScreen extends Sprite implements FrameInterface {
 
         this.score = this.model.initial_score;
 
+        this.tiles = new StringMap<TileAsset>();
+
         var backpack_iterator:Iterator<BackpackSlot> = this.model.backpack.grid.iterator();
         while (backpack_iterator.hasNext()) {
             var backpack_slot:BackpackSlot = backpack_iterator.next();
 
             var tile:TileAsset = new TileAsset();
+            tile.gotoAndStop('off');
+
             this.addChild(tile);
 
             tile.x = GRID_X + backpack_slot.x * tile.width;
             tile.y = GRID_Y + backpack_slot.y * tile.height;
+
+            this.tiles.set(backpack_slot.x + '_' + backpack_slot.y, tile);
         }
 
         this.addEventListener(MouseEvent.MOUSE_MOVE, this.onMouseMove);
@@ -127,6 +136,32 @@ class BackpackScreen extends Sprite implements FrameInterface {
             var image:BackpackItemImage = this.dragged.item_image;
             image.x = this.stage.mouseX - image.width * 0.5;
             image.y = this.stage.mouseY - image.height * 0.5;
+
+            var slot:BackpackSlot = null;
+
+            var x:Float = image.x + TILE_WIDTH * 0.5;
+            var y:Float = image.y + TILE_HEIGHT * 0.5;
+
+            if (GRID_X <= x && x <= GRID_X + GRID_WIDTH * TILE_WIDTH && GRID_Y <= y && y <= GRID_Y + GRID_HEIGHT * TILE_HEIGHT) {
+                slot = this.model.backpack.grid.get(Std.int((x - GRID_X) / TILE_WIDTH) + '_' + Std.int((y - GRID_Y) / TILE_HEIGHT));
+            }
+
+            var iterator:Iterator<BackpackSlot> = this.model.backpack.grid.iterator();
+            var slots:Array<BackpackSlot> = null != slot ? this.model.backpack.check(slot, this.dragged) : new Array<BackpackSlot>();
+
+            while (iterator.hasNext()) {
+                var bslot:BackpackSlot = iterator.next();
+                var found:Bool = false;
+
+                for (cslot in slots) {
+                    if (found = (cslot == bslot)) {
+                        break;
+                    }
+                }
+
+                this.tiles.get(bslot.x + '_' + bslot.y).gotoAndStop(found ? (bslot.item != this.dragged && bslot.is_occupied ? 'blocked' : 'on') : 'off');
+
+            }
         }
     }
 
@@ -145,8 +180,9 @@ class BackpackScreen extends Sprite implements FrameInterface {
                 slot = this.model.backpack.grid.get(Std.int((x - GRID_X) / TILE_WIDTH) + '_' + Std.int((y - GRID_Y) / TILE_HEIGHT));
             }
 
-            if (null != slot && this.model.backpack.check(slot, context)) {
+            if (null != slot) {
                 var slots:Array<BackpackSlot> = this.model.backpack.put(slot, context);
+
                 if (0 < slots.length) {
                     context.free();
                     context.occupy(slots);
@@ -161,14 +197,12 @@ class BackpackScreen extends Sprite implements FrameInterface {
 
                         this.asset.label_score.text = this.score;
                     }
+                } else if (this.hands == context) {
+                    image.x = HANDS_X;
+                    image.y = HANDS_Y;
                 } else {
                     image.returnToBase();
                 }
-            } else if (this.hands == context) {
-                image.x = HANDS_X;
-                image.y = HANDS_Y;
-            } else {
-                image.returnToBase();
             }
         }
     }
