@@ -1,8 +1,7 @@
 {
 "general":{
-"hands_duration":10,
-"total_duration":180,
-"initial_score":100
+"hands_duration":10000,
+"initial_score":100000
 },
 "items":[
 {"id":"Samsunk",
