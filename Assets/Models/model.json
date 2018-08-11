@@ -1,0 +1,45 @@
+{
+  "general" : {
+    "hands_duration" : 10,
+    "total_duration" : 100,
+    "initial_score" : 100
+  },
+  "items": [
+    {
+      "id": "przedmiot_1",
+      "image": "Item1Asset",
+      "score": 15,
+      "fields": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 2
+        }
+      ]
+    }
+  ],
+  "backpack": {
+    "id": "backpack",
+    "fields": [
+      {
+        "x": 0,
+        "y": 0
+      },
+      {
+        "x": 1,
+        "y": 1
+      },
+      {
+        "x": 2,
+        "y": 2
+      }
+    ]
+  }
+}
