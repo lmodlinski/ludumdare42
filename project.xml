@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="Ludum Dare 42" package="com.ludum.dare" version="1.0.0" company="Company Name" />
+	<app main="Main" path="Export" file="Main" />
+	
+	<source path="Source" />
+	
+	<haxelib name="openfl" />
+
+	<window width="1280" height="720" fps="60" hardware="true" allow-shaders="true" require-shaders="true" />
+
+	<assets path="Assets" rename="assets" />
+	
+</project>
