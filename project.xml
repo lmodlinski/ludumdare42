@@ -8,10 +8,12 @@
 
     <haxelib name="openfl"/>
     <haxelib name="swf"/>
+    <haxelib name="random"/>
 
     <window width="1280" height="720" fps="60" hardware="true" allow-shaders="true" require-shaders="true"/>
 
-    <assets path="Assets" rename="assets" include="*.swf"/>
+    <assets path="Assets" rename="assets" include="*"/>
+    <assets path="Assets/Models" rename="models" include="*"/>
 
     <library path="assets/BackpackStage.swf" preload="true" generate="true"/>
 

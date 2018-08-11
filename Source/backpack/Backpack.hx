@@ -22,9 +22,16 @@ class Backpack {
             var x:Int = Std.int(point.x + slot.x);
             var y:Int = Std.int(point.y + slot.y);
 
-            var cell:BackpackSlot = cast(this.grid.get(x + '_' + y), BackpackSlot);
+            var cell_raw:Dynamic = this.grid.get(x + '_' + y);
+            if (null != cell_raw) {
+                var cell:BackpackSlot = cast(cell_raw, BackpackSlot);
 
-            if (null == cell || (cell.item != item && cell.is_occupied)) {
+                if (null == cell || (cell.item != item && cell.is_occupied)) {
+                    result = false;
+
+                    break;
+                }
+            } else {
                 result = false;
 
                 break;
@@ -46,12 +53,21 @@ class Backpack {
             var x:Int = Std.int(point.x + slot.x);
             var y:Int = Std.int(point.y + slot.y);
 
-            var cell:BackpackSlot = cast(this.grid.get(x + '_' + y), BackpackSlot);
+            var cell_raw:Dynamic = this.grid.get(x + '_' + y);
+            if (null != cell_raw) {
+                var cell:BackpackSlot = cast(cell_raw, BackpackSlot);
 
-            if (null != cell && !cell.is_occupied) {
-                occupy_fields.push(cell);
+                if (null != cell && (cell.item == item || !cell.is_occupied)) {
+                    occupy_fields.push(cell);
+                } else {
+                    occupied_already = true;
+                    occupy_fields = new Array<BackpackSlot>();
+
+                    break;
+                }
             } else {
                 occupied_already = true;
+                occupy_fields = new Array<BackpackSlot>();
 
                 break;
             }
