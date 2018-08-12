@@ -1,5 +1,6 @@
 package screens;
 
+import openfl.Assets;
 import backpack.BackpackSlot;
 import openfl.media.SoundChannel;
 import motion.Actuate;
@@ -85,7 +86,7 @@ class BackpackScreen extends Sprite implements FrameInterface {
             this.tiles.set(Backpack.slot(backpack_slot.x, backpack_slot.y), tile);
         }
 
-        //        this.ambient_sound = Assets.getSound('assets/Sounds/menu_music.mp3').play();
+        this.ambient_sound = Assets.getSound('assets/Sounds/game_music.mp3').play();
 
         this.addEventListener(MouseEvent.MOUSE_MOVE, this.onMouseMove);
 
