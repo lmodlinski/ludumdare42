@@ -26,7 +26,7 @@ class MainScreen extends Sprite implements FrameInterface {
         this.asset.label_highscore_2.text = h2;
         this.asset.label_highscore_3.text = h3;
 
-//        this.ambient_sound = Assets.getSound('assets/Sounds/menu_music.mp3').play();
+        this.ambient_sound = Assets.getSound('assets/Sounds/lobby_music.mp3').play();
     }
 
     private function onLevel1Click(e:MouseEvent):Void {
