@@ -3,8 +3,8 @@ package events;
 import scores.Score;
 import openfl.events.Event;
 
-class EndEvent extends Event {
-    public static inline var TYPE:String = 'end_event';
+class AgainEvent extends Event {
+    public static inline var TYPE:String = 'summary_event';
 
     public var score(default, null):Score;
 

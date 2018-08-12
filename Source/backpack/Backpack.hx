@@ -68,4 +68,8 @@ class Backpack {
 
         return occupy_fields_filtered;
     }
+
+    public static function slot(x:Int, y:Int):String {
+        return x + '_' + y;
+    }
 }

@@ -9,6 +9,7 @@
     <haxelib name="openfl"/>
     <haxelib name="swf"/>
     <haxelib name="random"/>
+    <haxelib name="actuate"/>
 
     <window width="1280" height="720" fps="60" hardware="true" allow-shaders="true" require-shaders="true"/>
 

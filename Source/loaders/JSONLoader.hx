@@ -38,6 +38,7 @@ class JSONLoader {
             item_raw.id,
             item_raw.image,
             item_raw.score,
+            item_raw.weight,
             fields,
             width,
             height
@@ -55,6 +56,7 @@ class JSONLoader {
         var general = json.general;
 
         return new LevelModel(
+        backpack.id,
         new Backpack(grid),
         items,
         general.hands_duration,
