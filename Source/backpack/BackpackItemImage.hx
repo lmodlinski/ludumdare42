@@ -1,5 +1,6 @@
 package backpack;
 
+import openfl.display.MovieClip;
 import openfl.display.Sprite;
 
 class BackpackItemImage extends Sprite {
@@ -8,12 +9,24 @@ class BackpackItemImage extends Sprite {
     public var base_x(default, null):Float;
     public var base_y(default, null):Float;
 
+    public var insides(default, null):MovieClip;
+    public var angle(default, null):Int;
+
     public function new(classname:String, context:BackpackItemInstance) {
         super();
 
+        this.angle = 0;
+
         this.context = context;
 
-        this.addChild(Type.createInstance(Type.resolveClass(classname), []));
+        this.insides = Type.createInstance(Type.resolveClass(classname), []);
+        this.insides.stop();
+
+        this.addChild(this.insides);
+    }
+
+    public function rotate():Void {
+        this.insides.gotoAndStop('angle_' + (270 == angle ? angle = 0 : angle += 90));
     }
 
     public function setBase():Void {

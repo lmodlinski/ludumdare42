@@ -49,6 +49,8 @@ class BackpackItemInstance {
             fields.set(point.x + '_' + point.y, point);
         }
 
+        this.item_image.rotate();
+
         var swap:Int = this.width;
         this.width = this.height;
         this.height = swap;

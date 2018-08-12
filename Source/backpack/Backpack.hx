@@ -12,33 +12,10 @@ class Backpack {
         this.grid = grid;
     }
 
-    public function check(slot:BackpackSlot, item:BackpackItemInstance):Bool {
-        var iterator:Iterator<Point> = item.fields.iterator();
-        var result:Bool = true;
-
-        while (iterator.hasNext()) {
-            var point:Point = iterator.next();
-
-            var x:Int = Std.int(point.x + slot.x);
-            var y:Int = Std.int(point.y + slot.y);
-
-            var cell:BackpackSlot = cast(this.grid.get(x + '_' + y), BackpackSlot);
-
-            if (null == cell || (cell.item != item && cell.is_occupied)) {
-                result = false;
-
-                break;
-            }
-        }
-
-        return result;
-    }
-
-    public function put(slot:BackpackSlot, item:BackpackItemInstance):Array<BackpackSlot> {
+    public function check(slot:BackpackSlot, item:BackpackItemInstance):Array<BackpackSlot> {
         var iterator:Iterator<Point> = item.fields.iterator();
 
         var occupy_fields:Array<BackpackSlot> = [];
-        var occupied_already = false;
 
         while (iterator.hasNext()) {
             var point:Point = iterator.next();
@@ -46,23 +23,49 @@ class Backpack {
             var x:Int = Std.int(point.x + slot.x);
             var y:Int = Std.int(point.y + slot.y);
 
-            var cell:BackpackSlot = cast(this.grid.get(x + '_' + y), BackpackSlot);
+            var cell_raw:Dynamic = this.grid.get(x + '_' + y);
+            if (null != cell_raw) {
+                var cell:BackpackSlot = cast(cell_raw, BackpackSlot);
 
-            if (null != cell && !cell.is_occupied) {
-                occupy_fields.push(cell);
+                if (null != cell) {
+                    occupy_fields.push(cell);
+                } else {
+                    occupy_fields = new Array<BackpackSlot>();
+
+                    break;
+                }
             } else {
-                occupied_already = true;
+                occupy_fields = new Array<BackpackSlot>();
 
                 break;
-            }
-        }
-
-        if (!occupied_already) {
-            for (field in occupy_fields) {
-                field.occupy(item);
             }
         }
 
         return occupy_fields;
+    }
+
+    public function put(slot:BackpackSlot, item:BackpackItemInstance):Array<BackpackSlot> {
+        var occupy_fields:Array<BackpackSlot> = this.check(slot, item);
+        var occupy_fields_filtered:Array<BackpackSlot> = new Array<BackpackSlot>();
+
+        if (0 < occupy_fields.length) {
+            for (field in occupy_fields) {
+                if (field.item == item || !field.is_occupied) {
+                    occupy_fields_filtered.push(field);
+                } else {
+                    occupy_fields_filtered = new Array<BackpackSlot>();
+
+                    break;
+                }
+            }
+        }
+
+        if (0 < occupy_fields_filtered.length) {
+            for (ocfield in occupy_fields_filtered) {
+                ocfield.occupy(item);
+            }
+        }
+
+        return occupy_fields_filtered;
     }
 }
