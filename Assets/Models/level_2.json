@@ -1,7 +1,7 @@
 {
 "general":{
 "hands_duration":7000,
-"initial_score":100000
+"initial_score":0
 },
 "items":[
 {"id":"Samsunk",
